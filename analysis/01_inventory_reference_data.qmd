@@ -1,0 +1,68 @@
+---
+title: "Inventory of reference geodata"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+library(here)
+
+```
+
+```{r}
+lm_dir <- here("data", "raw", "lantmateriet")
+
+gpkg_files <- list.files(
+  lm_dir,
+  pattern = "\\.gpkg$",
+  recursive = TRUE,
+  full.names = TRUE
+)
+
+gpkg_files
+
+```
+
+## Layers
+
+```{r}
+map(
+  gpkg_files,
+  \(file) {
+    cat("\n\n###", basename(file), "\n")
+    print(st_layers(file))
+  }
+)
+
+```
+
+## Mark
+
+```{r}
+mark_file <- gpkg_files[str_detect(gpkg_files, "mark")]
+
+st_layers(mark_file)
+```
+
+## Administrativ boundaries
+
+```{r}
+admin_file <- gpkg_files[str_detect(gpkg_files, "administrativindelning")]
+
+st_layers(admin_file)
+
+```
+
+## Hydrology
+
+```{r}
+hydro_file <- gpkg_files[str_detect(gpkg_files, "hydrografi")]
+
+st_layers(hydro_file)
+```
+
